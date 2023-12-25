@@ -10,6 +10,10 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Hello, Api is working!");
+});
+
 app.use("/api", authRoute);
 
 app.listen(port, () => {
