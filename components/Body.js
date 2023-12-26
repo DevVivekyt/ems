@@ -24,7 +24,10 @@ const Body = () => {
           </View>
           <Text style={styles.text}>Employee List</Text>
         </Pressable>
-        <Pressable style={styles.item}>
+        <Pressable
+          style={styles.item}
+          onPress={() => router.push("/(home)/Scanner")}
+        >
           <View style={styles.icon}>
             <Ionicons name="ios-people-sharp" size={24} color="black" />
           </View>

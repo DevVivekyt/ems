@@ -3,7 +3,12 @@ import Employee from "../models/employe.js";
 import bcrypt from "bcrypt";
 
 export const registerEmployee = async (req, res) => {
-  const { employeePassword, employeeConfirmPassword, ...employee } = req.body;
+  const {
+    employeePassword,
+    employeeConfirmPassword,
+    employeeEmail,
+    ...employee
+  } = req.body;
 
   if (employeePassword !== employeeConfirmPassword) {
     return res
@@ -12,9 +17,13 @@ export const registerEmployee = async (req, res) => {
   }
 
   try {
+    const existingEmployee = await Employee.findOne({ employeeEmail });
+
+    if (existingEmployee) {
+      return res.status(400).json(createError("Email already exists!"));
+    }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(employeePassword, salt);
-
     const newEmployee = new Employee({
       ...employee,
       employeePassword: hash,

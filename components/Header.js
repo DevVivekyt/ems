@@ -1,14 +1,25 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Avatar } from "react-native-paper";
-import { FontAwesome } from "@expo/vector-icons";
 import { colors } from "../lib/utils";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
-const Header = () => {
+const Header = ({ home }) => {
+  const router = useRouter();
   return (
     <View style={styles.header}>
       <View>
-        <Text style={styles.Text}>Empolyee Management System</Text>
+        {home ? (
+          <Text style={styles.Text}>Empolyee Management System</Text>
+        ) : (
+          <Ionicons
+            name="arrow-back-outline"
+            size={24}
+            color="black"
+            onPress={() => router.back()}
+          />
+        )}
       </View>
       <Avatar.Image size={34} source={require("../assets/images/man.png")} />
     </View>

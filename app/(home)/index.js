@@ -12,7 +12,7 @@ const index = () => {
         colors={[colors.gradientFirst, colors.gradientSecond]}
         style={{ flex: 1 }}
       >
-        <Header />
+        <Header home={true} />
         <Body />
       </LinearGradient>
     </ScrollView>
