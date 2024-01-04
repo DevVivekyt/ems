@@ -4,6 +4,7 @@ import { Avatar } from "react-native-paper";
 import { colors } from "../lib/utils";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import GetLocation from "./GetLocation";
 
 const Header = ({ home }) => {
   const router = useRouter();
@@ -11,7 +12,7 @@ const Header = ({ home }) => {
     <View style={styles.header}>
       <View>
         {home ? (
-          <Text style={styles.Text}>Empolyee Management System</Text>
+          <GetLocation />
         ) : (
           <Ionicons
             name="arrow-back-outline"
@@ -40,9 +41,5 @@ const styles = StyleSheet.create({
   location: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  Text: {
-    fontWeight: "600",
-    fontSize: 16,
   },
 });

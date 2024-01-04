@@ -14,10 +14,7 @@ const Scanner = () => {
 
   useEffect(() => {
     if (scanned) {
-      // Handle the scanned data as needed (e.g., send it to your server, update state, etc.)
       console.log("Scanned Data:", scannedData);
-
-      // Reset the scanned state after handling the data
       setScanned(false);
     }
   }, [scanned, scannedData]);

@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import * as React from "react";
@@ -14,25 +15,13 @@ import { Switch } from "react-native-paper";
 import { addEmployeeFroms } from "../../lib/forms";
 import Header from "../../components/Header";
 import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
 
 const addemployee = () => {
   const [image, setImage] = React.useState(demoImg);
   const [isSwitchOn, setIsSwitchOn] = React.useState(true);
-  const [AddEmployee, setAddEmployee] = React.useState({
-    employeeId: "",
-    employeeName: "",
-    employeeEmail: "",
-    employeePassword: "",
-    employeeConfirmPassword: "",
-    designation: "",
-    joiningDate: "",
-    dateOfBirth: "",
-    salary: 0,
-    phoneNumber: "",
-    address: "",
-    isActive: true,
-    isDeleted: false,
-  });
+  const [AddEmployee, setAddEmployee] = React.useState(addEmployeeFroms);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   // Toggle for Active
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
@@ -62,26 +51,26 @@ const addemployee = () => {
       !AddEmployee.employeeConfirmPassword
     ) {
       Alert.alert(
-        "All Emloyee Name, Email, Password and Confirm Password is Required!"
+        "Emloyee Name, Email, Password and Confirm Password is Required!"
       );
       return;
-    } else if (
-      AddEmployee.employeePassword !== AddEmployee.employeeConfirmPassword
-    ) {
+    }
+    if (AddEmployee.employeePassword !== AddEmployee.employeeConfirmPassword) {
       Alert.alert("Password and Confirm Password do not match!");
       return;
     } else {
-      {
-        try {
-          console.log("AddEmployee", AddEmployee);
-          const response = await axios.post(
-            `${Base_Uri}addEmployee`,
-            AddEmployee
-          );
-          console.log(response?.data);
-        } catch (error) {
-          Alert.alert("Failed to add employeee", error);
-        }
+      try {
+        console.log("AddEmployee", AddEmployee);
+        setIsLoading(true);
+        const response = await axios.post(
+          `${Base_Uri}addEmployee`,
+          AddEmployee
+        );
+        console.log(response?.data);
+      } catch (error) {
+        Alert.alert("Failed to add employeee", error);
+      } finally {
+        setIsLoading(false);
       }
     }
     console.log(AddEmployee);
@@ -113,6 +102,7 @@ const addemployee = () => {
               placeholder="Jone Deo"
               placeholderTextColor={colors.gray}
               label="Full Name"
+              disabled={isLoading}
               value={AddEmployee.employeeName}
               onChangeText={(txt) => {
                 setAddEmployee({ ...AddEmployee, employeeName: txt });
@@ -125,6 +115,7 @@ const addemployee = () => {
               placeholder="Emp123"
               placeholderTextColor={colors.gray}
               label="Employee Id"
+              disabled={isLoading}
               value={AddEmployee.employeeId}
               onChangeText={(txt) => {
                 setAddEmployee({ ...AddEmployee, employeeId: txt });
@@ -138,6 +129,7 @@ const addemployee = () => {
               placeholderTextColor={colors.gray}
               label="Email"
               keyboardType="email-address"
+              disabled={isLoading}
               value={AddEmployee.employeeEmail}
               onChangeText={(txt) => {
                 setAddEmployee({ ...AddEmployee, employeeEmail: txt });
@@ -150,6 +142,7 @@ const addemployee = () => {
               placeholder="*****"
               placeholderTextColor={colors.gray}
               label="Password"
+              disabled={isLoading}
               right={<TextInput.Icon icon="eye" />}
               value={AddEmployee.employeePassword}
               onChangeText={(txt) => {
@@ -163,6 +156,7 @@ const addemployee = () => {
               placeholder="******"
               placeholderTextColor={colors.gray}
               label="Confirm Password"
+              disabled={isLoading}
               right={<TextInput.Icon icon="eye" />}
               value={AddEmployee.employeeConfirmPassword}
               onChangeText={(txt) => {
@@ -180,6 +174,7 @@ const addemployee = () => {
               placeholder="Developer"
               placeholderTextColor={colors.gray}
               label="Designation"
+              disabled={isLoading}
               value={AddEmployee.designation}
               onChangeText={(txt) => {
                 setAddEmployee({ ...AddEmployee, designation: txt });
@@ -193,6 +188,7 @@ const addemployee = () => {
               placeholderTextColor={colors.gray}
               label="Mobile No.."
               keyboardType="numeric"
+              disabled={isLoading}
               value={AddEmployee.phoneNumber}
               onChangeText={(txt) => {
                 setAddEmployee({ ...AddEmployee, phoneNumber: txt });
@@ -205,6 +201,7 @@ const addemployee = () => {
               placeholder="30 Oct..."
               placeholderTextColor={colors.gray}
               label="Date of Birth"
+              disabled={isLoading}
               value={AddEmployee.dateOfBirth}
               onChangeText={(txt) => {
                 setAddEmployee({ ...AddEmployee, dateOfBirth: txt });
@@ -217,6 +214,7 @@ const addemployee = () => {
               placeholder="30 Oct..."
               placeholderTextColor={colors.gray}
               label="Joining Date"
+              disabled={isLoading}
               value={AddEmployee.joiningDate}
               onChangeText={(txt) => {
                 setAddEmployee({ ...AddEmployee, joiningDate: txt });
@@ -230,6 +228,7 @@ const addemployee = () => {
               placeholderTextColor={colors.gray}
               label="Salary"
               keyboardType="numeric"
+              disabled={isLoading}
               value={
                 AddEmployee.salary !== undefined
                   ? AddEmployee.salary.toString()
@@ -261,16 +260,27 @@ const addemployee = () => {
               numberOfLines={4}
               placeholderTextColor={colors.gray}
               value={AddEmployee.address}
+              disabled={isLoading}
               onChangeText={(txt) => {
                 setAddEmployee({ ...AddEmployee, address: txt });
               }}
             />
           </View>
-          <Pressable style={styles.addBtn} onPress={_SaveEmployee}>
-            <Text style={{ fontWeight: "bold", color: "white" }}>
-              Add Employee
-            </Text>
-          </Pressable>
+
+          <LinearGradient
+            colors={[colors.gradientFirst, colors.gradientSecond]}
+            style={styles.addBtn}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          >
+            <Button
+              onPress={_SaveEmployee}
+              style={styles.addBtn}
+              loading={isLoading}
+            >
+              <Text style={styles.buttonText}>Add Employee</Text>
+            </Button>
+          </LinearGradient>
         </View>
       </ScrollView>
     </>
@@ -289,11 +299,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   addBtn: {
-    backgroundColor: "#ABCABA",
-    padding: 10,
-    marginTop: 20,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 5,
+    borderRadius: 100,
+  },
+  buttonText: {
+    fontWeight: "bold",
+    color: "white",
   },
 });

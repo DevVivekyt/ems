@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import connectToDatabase from "./connection/conn.js";
 import authRoute from "./routes/auth.js";
+import qrRoute from "./routes/qr.js";
 
 const app = express();
 const port = 8800;
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", authRoute);
+app.use("/api", qrRoute);
 
 app.listen(port, () => {
   connectToDatabase();

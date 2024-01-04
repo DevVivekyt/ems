@@ -1,30 +1,43 @@
-import { Pressable, StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Alert,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Base_Uri } from "../../lib/utils";
-// import SearchResults from "../../components/SearchResults";
+import EmployeeCard from "../../components/EmployeeCard";
+import { useDispatch, useSelector } from "react-redux";
+import { employeesAPI } from "../../redux/slice/employee";
+import { ActivityIndicator } from "react-native-paper";
 
 const employees = () => {
-  const [employees, setEmployees] = useState([]);
   const [input, setInput] = useState("");
   const router = useRouter();
+  const dispatch = useDispatch();
+  const employeeData = useSelector((state) => state.employeeData);
+  const loading = useSelector((state) => state.employeeData.loading);
+  console.log("loading", loading);
 
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
-        const response = await axios.get(`${Base_Uri}employee`);
-        setEmployees(response.data);
+        dispatch(employeesAPI());
       } catch (error) {
-        console.log("error fetching employee data", error);
+        console.error("Error fetching employee data:", error);
       }
     };
+
     fetchEmployeeData();
   }, []);
 
-  console.log(employees.result);
   return (
     <View style={styles.root}>
       <View style={styles.continer}>
@@ -48,8 +61,25 @@ const employees = () => {
             style={{ flex: 1 }}
             placeholder="Search"
           />
-
-          {employees.result?.length > 0 && (
+          <View>
+            <Pressable>
+              <AntDesign
+                name="pluscircle"
+                size={30}
+                color="#0072b1"
+                onPress={() => router.push("/(home)/addemployee")}
+              />
+            </Pressable>
+          </View>
+        </Pressable>
+      </View>
+      {loading ? (
+        <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
+      ) : (
+        <View>
+          {employeeData.empData.length > 0 ? (
+            <EmployeeCard data={employeeData.empData} input={input} />
+          ) : (
             <View>
               <Pressable>
                 <AntDesign
@@ -61,27 +91,8 @@ const employees = () => {
               </Pressable>
             </View>
           )}
-        </Pressable>
-      </View>
-
-      {/* {employees.length > 0 ? (
-        <SearchResults data={employees} input={input} setInput={setInput} />
-      ) : (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text>No Data</Text>
-          <Text>Press on the plus button and add your Employee</Text>
-          <Pressable onPress={() => router.push("/(home)/adddetails")}>
-            <AntDesign
-              style={{ marginTop: 30 }}
-              name="pluscircle"
-              size={24}
-              color="black"
-            />
-          </Pressable>
         </View>
-      )} */}
+      )}
     </View>
   );
 };

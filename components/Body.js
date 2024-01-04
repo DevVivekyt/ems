@@ -7,6 +7,7 @@ import {
   Octicons,
   MaterialCommunityIcons,
   Feather,
+  FontAwesome,
 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
@@ -35,6 +36,18 @@ const Body = () => {
         </Pressable>
       </View>
       <View style={styles.reportView}>
+        <Pressable
+          style={styles.reportContainer}
+          onPress={() => router.push("/(home)/QrCode")}
+        >
+          <View style={styles.reportFirstIcon}>
+            <FontAwesome name="qrcode" size={24} color="black" />
+          </View>
+          <Text style={styles.reportText}>Generate QR</Text>
+          <View style={styles.reportSecondIcon}>
+            <Entypo name="chevron-right" size={24} color="black" />
+          </View>
+        </Pressable>
         <Pressable style={styles.reportContainer}>
           <View style={styles.reportFirstIcon}>
             <Ionicons name="newspaper-outline" size={24} color="black" />
