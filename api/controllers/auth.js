@@ -17,7 +17,9 @@ export const registerEmployee = async (req, res) => {
   }
 
   try {
-    const existingEmployee = await Employee.findOne({ employeeEmail });
+    const existingEmployee = await Employee.findOne({
+      employeeEmail,
+    });
 
     if (existingEmployee) {
       return res.status(400).json(createError("Email already exists!"));
@@ -26,7 +28,9 @@ export const registerEmployee = async (req, res) => {
     const hash = bcrypt.hashSync(employeePassword, salt);
     const newEmployee = new Employee({
       ...employee,
+      employeeEmail,
       employeePassword: hash,
+      profilePic: req.file.path,
     });
 
     await newEmployee.save();

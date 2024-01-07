@@ -1,7 +1,6 @@
-import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import * as React from "react";
-import { Avatar, Button, Card } from "react-native-paper";
-import Img from "../assets/images/man.png";
+import { Avatar, Card } from "react-native-paper";
 import { colors } from "../lib/utils";
 import { useDispatch } from "react-redux";
 import { employeesAPI } from "../redux/slice/employee";
@@ -16,7 +15,7 @@ const EmployeeCard = ({ data, input }) => {
       dispatch(employeesAPI());
       setRefreshing(false);
     } catch (error) {
-      console.error("Error fetching employee data:", error);
+      Alert.alert("Error fetching employee data:", error);
     }
   };
   return (

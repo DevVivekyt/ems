@@ -50,7 +50,7 @@ cron.schedule("*/1 * * * *", async () => {
       { $set: { isExpired: true } }
     );
 
-    console.log("Expired records updated successfully");
+    // console.log("Expired records updated successfully");
   } catch (error) {
     console.error("Error updating expired records:", error);
   }

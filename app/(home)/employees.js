@@ -1,15 +1,5 @@
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Alert,
-  ScrollView,
-  FlatList,
-} from "react-native";
+import { Pressable, StyleSheet, View, TextInput, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -24,14 +14,13 @@ const employees = () => {
   const dispatch = useDispatch();
   const employeeData = useSelector((state) => state.employeeData);
   const loading = useSelector((state) => state.employeeData.loading);
-  console.log("loading", loading);
 
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
         dispatch(employeesAPI());
       } catch (error) {
-        console.error("Error fetching employee data:", error);
+        Alert.alert("Error fetching employee data:", error);
       }
     };
 
@@ -74,7 +63,10 @@ const employees = () => {
         </Pressable>
       </View>
       {loading ? (
-        <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
+        <ActivityIndicator
+          size="large"
+          style={{ flex: 1, justifyContent: "center" }}
+        />
       ) : (
         <View>
           {employeeData.empData.length > 0 ? (
