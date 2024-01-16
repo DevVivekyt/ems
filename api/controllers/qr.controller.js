@@ -1,14 +1,14 @@
-import crypto from "crypto";
-import QrCodeModal from "../models/qr.js";
-import { createError, createSuccess } from "../middleware/response.js";
-import cron from "node-cron";
+let crypto = require("crypto");
+let QrCodeModal = require("../models/qr.model.js");
+let { createError, createSuccess } = require("../middleware/response.js");
+let cron = require("node-cron");
 
 // Generate a random value
 const generateRandomValue = () => {
   return crypto.randomBytes(16).toString("hex");
 };
 
-export const generateQrValue = async (req, res) => {
+const generateQrValue = async (req, res) => {
   try {
     const randomValue = generateRandomValue();
     const expiration = new Date(Date.now() + 1 * 60 * 1000);
@@ -30,7 +30,7 @@ export const generateQrValue = async (req, res) => {
   }
 };
 
-export const getAllQr = async (req, res) => {
+const getAllQr = async (req, res) => {
   try {
     const Value = await QrCodeModal.find();
 
@@ -49,9 +49,9 @@ cron.schedule("*/1 * * * *", async () => {
       { expiration: { $lt: currentDateTime }, isExpired: false },
       { $set: { isExpired: true } }
     );
-
-    // console.log("Expired records updated successfully");
   } catch (error) {
     console.error("Error updating expired records:", error);
   }
 });
+
+module.exports = { getAllQr, generateQrValue };

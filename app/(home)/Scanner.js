@@ -1,11 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TextInput, Button, Text } from "react-native";
-import { BarCodeScanner } from "expo-barcode-scanner";
+import React, { useState, useEffect, useRef } from "react";
+import { View, StyleSheet, TextInput, Button } from "react-native";
+import { Camera } from "expo-camera";
 import { colors } from "../../lib/utils";
 
 const Scanner = () => {
+  const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scannedData, setScannedData] = useState("");
+  const cameraRef = useRef(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
@@ -23,12 +32,20 @@ const Scanner = () => {
     setScanned(false);
   };
 
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
   return (
     <View style={styles.container}>
       {!scanned ? (
-        <BarCodeScanner
+        <Camera
+          ref={cameraRef}
+          style={styles.camera}
           onBarCodeScanned={handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
         />
       ) : (
         <>
@@ -51,6 +68,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  camera: {
+    flex: 1,
+    width: "100%",
   },
 });
 

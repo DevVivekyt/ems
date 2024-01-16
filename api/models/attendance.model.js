@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+let mongoose = require("mongoose");
 
 const attendanceSchema = mongoose.Schema(
   {
@@ -10,8 +10,16 @@ const attendanceSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    date: {
+    qrValue: {
       type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+    },
+    date: {
+      type: Date,
       required: true,
     },
   },
@@ -19,4 +27,4 @@ const attendanceSchema = mongoose.Schema(
 );
 
 const Attendance = mongoose.model("Attendance", attendanceSchema);
-export default Attendance;
+module.exports = Attendance;

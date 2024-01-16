@@ -1,5 +1,5 @@
-import multer from "multer";
-import fs from "fs";
+let multer = require("multer");
+let fs = require("fs");
 
 // Create the uploads directory if it doesn't exist
 const uploadDirectory = "uploads";
@@ -8,7 +8,7 @@ if (!fs.existsSync(uploadDirectory)) {
 }
 
 // Upload Images
-export const upload = multer({
+const upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, uploadDirectory);
@@ -18,3 +18,5 @@ export const upload = multer({
     },
   }),
 }).single("profilePic");
+
+module.exports = upload;

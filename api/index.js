@@ -1,8 +1,9 @@
-import express from "express";
-import cors from "cors";
-import connectToDatabase from "./connection/conn.js";
-import authRoute from "./routes/auth.js";
-import qrRoute from "./routes/qr.js";
+let express = require("express");
+let cors = require("cors");
+let connectToDatabase = require("./connection/conn");
+let authRoute = require("./routes/auth.route");
+let qrRoute = require("./routes/qr.route");
+let attendanceRoute = require("./routes/attendance.route");
 
 const app = express();
 const port = 8800;
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 
 app.use("/api", authRoute);
 app.use("/api", qrRoute);
+app.use("/api", attendanceRoute);
 
 app.listen(port, () => {
   connectToDatabase();

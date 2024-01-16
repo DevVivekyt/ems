@@ -1,11 +1,11 @@
-export const createError = (message) => {
+const createError = (message) => {
   return {
     success: false,
     status: 0,
     message,
   };
 };
-export const createSuccess = (message, result) => {
+const createSuccess = (message, result) => {
   return {
     success: true,
     status: 1,
@@ -13,3 +13,5 @@ export const createSuccess = (message, result) => {
     result,
   };
 };
+
+module.exports = { createError, createSuccess };

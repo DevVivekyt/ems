@@ -1,8 +1,8 @@
-import { createError, createSuccess } from "../middleware/response.js";
-import Employee from "../models/employe.js";
-import bcrypt from "bcrypt";
+let { createError, createSuccess } = require("../middleware/response.js");
+let Employee = require("../models/employe.model.js");
+let bcrypt = require("bcrypt");
 
-export const registerEmployee = async (req, res) => {
+const registerEmployee = async (req, res) => {
   const {
     employeePassword,
     employeeConfirmPassword,
@@ -49,7 +49,7 @@ export const registerEmployee = async (req, res) => {
   }
 };
 
-export const retrieveEmployee = async (req, res) => {
+const retrieveEmployee = async (req, res) => {
   try {
     const employees = await Employee.find({ isDeleted: false });
 
@@ -64,3 +64,5 @@ export const retrieveEmployee = async (req, res) => {
     res.status(500).json(createError("Failed to retrive employee"));
   }
 };
+
+module.exports = { registerEmployee, retrieveEmployee };

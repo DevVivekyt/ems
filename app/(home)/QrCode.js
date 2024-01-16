@@ -7,37 +7,25 @@ import { generateQrAPI } from "../../redux/slice/qrSlice";
 import { ActivityIndicator } from "react-native-paper";
 
 const QrCode = () => {
-  const [value, setValue] = React.useState("hello");
-  const { height } = Dimensions.get("window");
   const dispatch = useDispatch();
-  const QrValue = useSelector((state) => state.qrData);
+  const QrValue = useSelector((state) => state.qrData.QrData.randomValue);
+  console.log("QrValue", QrValue);
   const loading = useSelector((state) => state.qrData.loading);
-  console.log(loading);
+  console.log("loading", loading);
 
-  console.log(QrValue.QrData.randomValue);
-  React.useEffect(() => {
-    const fetchQrValueData = async () => {
-      try {
-        dispatch(generateQrAPI());
-      } catch (error) {
-        Alert.alert("Error fetching QR data:", error);
-      }
-    };
-
-    fetchQrValueData();
-
-    if (QrValue) {
-      setValue(QrValue.QrData.randomValue);
-    } else {
-      setValue("Hello");
+  const fetchQrValueData = async () => {
+    try {
+      dispatch(generateQrAPI());
+    } catch (error) {
+      Alert.alert("Error fetching QR data:", error);
     }
+  };
 
-    const intervalId = setInterval(fetchQrValueData, 60000);
-    return () => {
-      console.log("fetch again");
-      clearInterval(intervalId);
-    };
-  }, [value]);
+  React.useEffect(() => {
+    fetchQrValueData();
+    const intervalId = setInterval(fetchQrValueData, 30000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -56,7 +44,7 @@ const QrCode = () => {
           }}
         >
           <QRCode
-            value={value}
+            value={QrValue}
             size={300}
             logo={require("../../assets/images/man.png")}
           />

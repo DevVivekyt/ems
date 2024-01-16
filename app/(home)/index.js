@@ -7,15 +7,15 @@ import Body from "../../components/Body";
 
 const index = () => {
   return (
-    <ScrollView>
-      <LinearGradient
-        colors={[colors.gradientFirst, colors.gradientSecond]}
-        style={{ flex: 1 }}
-      >
-        <Header home={true} />
+    <LinearGradient
+      colors={[colors.gradientFirst, colors.gradientSecond]}
+      style={{ flex: 1 }}
+    >
+      <Header home={true} />
+      <ScrollView>
         <Body />
-      </LinearGradient>
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
