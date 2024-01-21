@@ -30,7 +30,7 @@ const registerEmployee = async (req, res) => {
       ...employee,
       employeeEmail,
       employeePassword: hash,
-      profilePic: req.file.path,
+      // profilePic: req.file.path,
     });
 
     await newEmployee.save();
