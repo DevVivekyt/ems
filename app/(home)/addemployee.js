@@ -38,7 +38,7 @@ const addemployee = () => {
       aspect: [4, 3],
       quality: 1,
     });
-
+    console.log(result);
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
@@ -63,7 +63,12 @@ const addemployee = () => {
       return;
     } else {
       try {
-        dispatch(saveemployees(AddEmployee));
+        AddEmployee.profilePic = image;
+        console.log(AddEmployee);
+        return;
+        const response = await dispatch(saveemployees(AddEmployee));
+
+        console.log("response", response);
       } catch (error) {
         Alert.alert("Failed to add employeee", error);
       }

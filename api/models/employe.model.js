@@ -49,7 +49,7 @@ const employeeSchema = mongoose.Schema(
     },
     profilePic: {
       type: String,
-      require: true,
+      require: false,
     },
     isActive: {
       type: Boolean,
