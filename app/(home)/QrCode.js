@@ -11,8 +11,6 @@ const QrCode = () => {
   const QrValue = useSelector((state) => state.qrData.QrData.randomValue);
   console.log("QrValue", QrValue);
   const loading = useSelector((state) => state.qrData.loading);
-  console.log("loading", loading);
-
   const fetchQrValueData = async () => {
     try {
       dispatch(generateQrAPI());
@@ -22,8 +20,13 @@ const QrCode = () => {
   };
 
   React.useEffect(() => {
+    // Fetch data initially
     fetchQrValueData();
+
+    // Set up interval to fetch data every 30 seconds
     const intervalId = setInterval(fetchQrValueData, 30000);
+
+    // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
@@ -48,6 +51,7 @@ const QrCode = () => {
             size={300}
             logo={require("../../assets/images/man.png")}
           />
+          <Text>QrValue {QrValue}</Text>
         </View>
       )}
     </View>

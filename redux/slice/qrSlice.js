@@ -5,11 +5,11 @@ import { Base_Uri } from "../../lib/utils";
 // create thunk
 
 export const generateQrAPI = createAsyncThunk(
-  "generateQr",
+  "generateQrAPI",
   async (thunkAPI) => {
     try {
-      const response = await axios.post(`${Base_Uri}/generateQr`);
-      //   console.log(response.data);
+      const response = await axios.get(`${Base_Uri}generateQr`);
+      // console.log("QR APi", response);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

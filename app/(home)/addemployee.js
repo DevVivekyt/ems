@@ -15,13 +15,16 @@ import { Switch } from "react-native-paper";
 import { addEmployeeFroms } from "../../lib/forms";
 import Header from "../../components/Header";
 import axios from "axios";
-import { LinearGradient } from "expo-linear-gradient";
+import { useDispatch, useSelector } from "react-redux";
+import { saveemployees } from "../../redux/slice/employee";
+// import { LinearGradient } from "expo-linear-gradient";
 
 const addemployee = () => {
   const [image, setImage] = React.useState(demoImg);
   const [isSwitchOn, setIsSwitchOn] = React.useState(true);
   const [AddEmployee, setAddEmployee] = React.useState(addEmployeeFroms);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const isLoading = useSelector((state) => state.employeeData.loading);
+  const dispatch = useDispatch();
 
   // Toggle for Active
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
@@ -60,20 +63,11 @@ const addemployee = () => {
       return;
     } else {
       try {
-        console.log("AddEmployee", AddEmployee);
-        setIsLoading(true);
-        const response = await axios.post(
-          `${Base_Uri}addEmployee`,
-          AddEmployee
-        );
-        console.log(response?.data);
+        dispatch(saveemployees(AddEmployee));
       } catch (error) {
         Alert.alert("Failed to add employeee", error);
-      } finally {
-        setIsLoading(false);
       }
     }
-    console.log(AddEmployee);
   };
   return (
     <>
@@ -267,20 +261,20 @@ const addemployee = () => {
             />
           </View>
 
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.gradientFirst, colors.gradientSecond]}
             style={styles.addBtn}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
+          > */}
+          <Button
+            onPress={_SaveEmployee}
+            style={styles.addBtn}
+            loading={isLoading}
           >
-            <Button
-              onPress={_SaveEmployee}
-              style={styles.addBtn}
-              loading={isLoading}
-            >
-              <Text style={styles.buttonText}>Add Employee</Text>
-            </Button>
-          </LinearGradient>
+            <Text style={styles.buttonText}>Add Employee</Text>
+          </Button>
+          {/* </LinearGradient> */}
         </View>
       </ScrollView>
     </>
@@ -302,6 +296,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,
+    backgroundColor: "black",
   },
   buttonText: {
     fontWeight: "bold",
